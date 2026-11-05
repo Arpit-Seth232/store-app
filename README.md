@@ -84,6 +84,43 @@ This project uses **Springdoc OpenAPI** to generate API documentation automatica
 
 ---
 
+## Getting Started
+
+### Prerequisites
+- Java 17+
+- Docker & Docker Compose
+
+### 1. Setup Environment
+Copy the example environment file and update any configurations (e.g. database credentials or ports) if needed:
+```bash
+cp .env.example .env
+```
+
+### 2. Start Infrastructure (MySQL & Redis)
+Spin up the database and cache containers:
+```bash
+docker compose up -d
+```
+
+### 3. Run the Application
+```bash
+./mvnw spring-boot:run
+```
+Once running, access the Swagger UI at `http://localhost:8080/swagger`.
+
+### 4. Run Tests
+```bash
+./mvnw clean verify
+```
+
+### 5. Stop Infrastructure
+To stop the background containers:
+```bash
+docker compose down
+```
+
+---
+
 ## Code Style & Formatting
 
 Code formatting is enforced using `formatter-maven-plugin`. Run these commands before committing:

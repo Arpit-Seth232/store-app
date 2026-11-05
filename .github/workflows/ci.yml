@@ -142,7 +142,7 @@ jobs:
 
       - name: Start Spring Boot app and verify endpoint
         run: |
-          ./mvnw spring-boot:start
+          ./mvnw compile spring-boot:start
           curl -f -L http://localhost:8080/swagger
           ./mvnw spring-boot:stop
 

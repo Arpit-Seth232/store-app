@@ -85,6 +85,14 @@ git add <resolved-files>
 git rebase --continue
 ```
 
+### Squash your commits (Keep git history linear)
+To maintain a clean and linear git commit graph, each PR should contain **only 1 atomic commit**. If you have multiple commits on your feature branch, squash them before submitting your PR:
+```bash
+# Interactively squash your branch commits against main
+git rebase -i origin/main
+```
+In the interactive editor, keep the first commit as `pick`, change the others to `squash` (or `s`), and save with a clean Conventional Commit message.
+
 ### Push and open a PR
 Push your branch to GitHub:
 ```bash

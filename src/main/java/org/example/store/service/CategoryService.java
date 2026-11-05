@@ -17,22 +17,16 @@ public class CategoryService {
     private final CategoryMapper categoryMapper;
 
     public List<CategoryDTO> findAll() {
-        return categoryRepo.findAll()
-                .stream()
-                .map(categoryMapper::toDTO)
-                .toList();
+        return categoryRepo.findAll().stream().map(categoryMapper::toDTO).toList();
     }
 
     public List<CategoryDTO> findAllByCategoryName(String categoryName) {
-        return categoryRepo.findAllByCategoryNameContainingIgnoreCase(categoryName)
-                .stream()
-                .map(categoryMapper::toDTO)
+        return categoryRepo.findAllByCategoryNameContainingIgnoreCase(categoryName).stream().map(categoryMapper::toDTO)
                 .toList();
     }
 
     public Optional<CategoryDTO> findById(Long id) {
-        return categoryRepo.findById(id)
-                .map(categoryMapper::toDTO);
+        return categoryRepo.findById(id).map(categoryMapper::toDTO);
     }
 
     private boolean existsById(Long id) {
@@ -45,12 +39,11 @@ public class CategoryService {
     }
 
     public Optional<CategoryDTO> update(Long id, CategoryDTO categoryDTO) {
-        return categoryRepo.findById(id)
-                .map(existingCategory -> {
-                    existingCategory.setCategoryName(categoryDTO.getCategoryName());
-                    existingCategory.setDescription(categoryDTO.getDescription());
-                    return categoryMapper.toDTO(categoryRepo.save(existingCategory));
-                });
+        return categoryRepo.findById(id).map(existingCategory -> {
+            existingCategory.setCategoryName(categoryDTO.getCategoryName());
+            existingCategory.setDescription(categoryDTO.getDescription());
+            return categoryMapper.toDTO(categoryRepo.save(existingCategory));
+        });
     }
 
     public boolean delete(Long id) {

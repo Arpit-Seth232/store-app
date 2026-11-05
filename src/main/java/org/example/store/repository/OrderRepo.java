@@ -13,22 +13,22 @@ import java.util.Optional;
 
 @Repository
 public interface OrderRepo extends JpaRepository<Order, Long> {
-    @EntityGraph(attributePaths = {"items", "items.product"})
+    @EntityGraph(attributePaths = { "items", "items.product" })
     List<Order> findAll();
 
-    @EntityGraph(attributePaths = {"items", "items.product"})
+    @EntityGraph(attributePaths = { "items", "items.product" })
     Optional<Order> findById(Long id);
 
-    @EntityGraph(attributePaths = {"items", "items.product"})
+    @EntityGraph(attributePaths = { "items", "items.product" })
     List<Order> findByTotalAmountBetween(BigDecimal min, BigDecimal max);
 
-    @EntityGraph(attributePaths = {"items", "items.product"})
+    @EntityGraph(attributePaths = { "items", "items.product" })
     List<Order> findAllByCustomerId(Long customerId);
 
-    @EntityGraph(attributePaths = {"items", "items.product"})
+    @EntityGraph(attributePaths = { "items", "items.product" })
     List<Order> findTop10ByOrderByTotalAmountDesc();
 
-    @EntityGraph(attributePaths = {"items", "items.product"})
+    @EntityGraph(attributePaths = { "items", "items.product" })
     List<Order> findByCustomerIdOrderByTotalAmountDesc(Long customerId);
 
     @Query("SELECT DISTINCT o FROM Order o JOIN FETCH o.customer c JOIN FETCH o.items i JOIN FETCH i.product p JOIN FETCH p.category WHERE i.product.id = :productId")

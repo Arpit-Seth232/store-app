@@ -21,8 +21,10 @@ public class TimeMeasurementAspect {
     @SuppressWarnings("UnusedReturnValue")
     public Object logTime(ProceedingJoinPoint joinPoint) throws Throwable {
         Object returnValue = joinPoint.proceed();
-        if (returnValue instanceof Mono<?> mono) return logMono(mono, joinPoint);
-        else if (returnValue instanceof Flux<?> flux) return logFlux(flux, joinPoint);
+        if (returnValue instanceof Mono<?> mono)
+            return logMono(mono, joinPoint);
+        else if (returnValue instanceof Flux<?> flux)
+            return logFlux(flux, joinPoint);
         else {
             long startTime = System.currentTimeMillis();
             logMetrics(joinPoint, startTime);
@@ -48,11 +50,9 @@ public class TimeMeasurementAspect {
     }
 
     private void logMetrics(ProceedingJoinPoint joinPoint, long startTime) {
-        log.info("\nMetrics:\n  - {}\n  - For: {}\n  - With Args: ({})\n  - Took: {} ms",
-                joinPoint.getKind(),
+        log.info("\nMetrics:\n  - {}\n  - For: {}\n  - With Args: ({})\n  - Took: {} ms", joinPoint.getKind(),
                 joinPoint.getSignature(),
                 String.join(", ", Arrays.stream(joinPoint.getArgs()).map(String::valueOf).toArray(String[]::new)),
-                System.currentTimeMillis() - startTime
-        );
+                System.currentTimeMillis() - startTime);
     }
 }

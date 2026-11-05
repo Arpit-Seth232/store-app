@@ -18,20 +18,19 @@ public class DummyProductService {
 
     @Cacheable(value = "allDummyProducts")
     public Flux<DummyProductDTO> getAllDummyProducts() {
-        return webClient.get()
-                .uri("/products")
-                .retrieve()
-                .onStatus(HttpStatusCode::isError, clientResponse -> Mono.error(new DummyProductFetchException("Failed To Fetch Products, Status: " + clientResponse.statusCode())))
+        return webClient.get().uri("/products").retrieve()
+                .onStatus(HttpStatusCode::isError,
+                        clientResponse -> Mono.error(new DummyProductFetchException(
+                                "Failed To Fetch Products, Status: " + clientResponse.statusCode())))
                 .bodyToMono(DummyProductResponseDTO.class)
                 .flatMapMany(response -> Flux.fromIterable(response.getProducts()));
     }
 
     @Cacheable(value = "dummyProductById", key = "#id")
     public Mono<DummyProductDTO> getDummyProductById(Integer id) {
-        return webClient.get()
-                .uri("/products/{id}", id)
-                .retrieve()
-                .onStatus(HttpStatusCode::isError, clientResponse -> Mono.error(new DummyProductFetchException("Failed To Fetch Product With ID '" + id + "', Status: " + clientResponse.statusCode())))
+        return webClient.get().uri("/products/{id}", id).retrieve()
+                .onStatus(HttpStatusCode::isError, clientResponse -> Mono.error(new DummyProductFetchException(
+                        "Failed To Fetch Product With ID '" + id + "', Status: " + clientResponse.statusCode())))
                 .bodyToMono(DummyProductDTO.class);
     }
 }

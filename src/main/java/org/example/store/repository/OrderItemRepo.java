@@ -12,10 +12,10 @@ import java.util.List;
 
 @Repository
 public interface OrderItemRepo extends JpaRepository<OrderItem, Long> {
-    @EntityGraph(attributePaths = {"order", "order.customer", "product", "product.category"})
+    @EntityGraph(attributePaths = { "order", "order.customer", "product", "product.category" })
     List<OrderItem> findByQuantityGreaterThan(Integer quantity);
 
-    @EntityGraph(attributePaths = {"order", "order.customer", "product", "product.category"})
+    @EntityGraph(attributePaths = { "order", "order.customer", "product", "product.category" })
     List<OrderItem> findByOrderId(Long orderId);
 
     @Query(value = "SELECT SUM(item_quantity) FROM order_items WHERE product_id = :productId", nativeQuery = true)

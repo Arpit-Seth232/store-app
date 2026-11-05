@@ -10,9 +10,6 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .info(new Info()
-                        .title("Store APIs")
-                        .version("1.0")
-                        .description("APIs For Managing Store Products"));
+                .info(new Info().title("Store APIs").version("1.0").description("APIs For Managing Store Products"));
     }
 }

@@ -84,6 +84,22 @@ This project uses **Springdoc OpenAPI** to generate API documentation automatica
 
 ---
 
+## Code Style & Formatting
+
+Code formatting is enforced using `formatter-maven-plugin`. Run these commands before committing:
+
+- **Auto-format codebase**:
+  ```bash
+  ./mvnw formatter:format
+  ```
+
+- **Validate formatting**:
+  ```bash
+  ./mvnw formatter:validate
+  ```
+
+---
+
 ## Configuration
 
 - Environment variables are loaded from `.env`.

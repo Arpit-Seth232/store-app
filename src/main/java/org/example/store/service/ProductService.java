@@ -23,31 +23,25 @@ public class ProductService {
 
     @Cacheable(value = "allProducts")
     public List<ProductDTO> findAll() {
-        return productRepo.findAll()
-                .stream()
-                .map(productMapper::toDTO)
-                .toList();
+        return productRepo.findAll().stream().map(productMapper::toDTO).toList();
     }
 
     @Cacheable(value = "allProductsByName", key = "#productName")
     public List<ProductDTO> findAllByProductName(String productName) {
-        return productRepo.findAllByProductNameContainingIgnoreCase(productName)
-                .stream()
-                .map(productMapper::toDTO)
+        return productRepo.findAllByProductNameContainingIgnoreCase(productName).stream().map(productMapper::toDTO)
                 .toList();
     }
 
     @Cacheable(value = "productById", key = "#id")
     public Optional<ProductDTO> findById(Long id) {
-        return productRepo.findById(id)
-                .map(productMapper::toDTO);
+        return productRepo.findById(id).map(productMapper::toDTO);
     }
 
     private boolean existsById(Long id) {
         return productRepo.existsById(id);
     }
 
-    @CacheEvict(value = {"allProducts", "allProductsByName", "productById"}, allEntries = true)
+    @CacheEvict(value = { "allProducts", "allProductsByName", "productById" }, allEntries = true)
     public ProductDTO insert(ProductDTO productDTO) {
         Product product = productMapper.toEntity(productDTO);
         Category category = getCategoryByName(productDTO.getCategoryName());
@@ -55,25 +49,24 @@ public class ProductService {
         return productMapper.toDTO(productRepo.save(product));
     }
 
-    @CacheEvict(value = {"allProducts", "allProductsByName", "productById"}, allEntries = true)
+    @CacheEvict(value = { "allProducts", "allProductsByName", "productById" }, allEntries = true)
     public Optional<ProductDTO> update(Long id, ProductDTO productDTO) {
-        return productRepo.findById(id)
-                .map(product -> {
-                    product.setProductName(productDTO.getProductName());
-                    product.setPrice(productDTO.getPrice());
-                    product.setRating(productDTO.getRating());
-                    product.setDescription(productDTO.getDescription());
+        return productRepo.findById(id).map(product -> {
+            product.setProductName(productDTO.getProductName());
+            product.setPrice(productDTO.getPrice());
+            product.setRating(productDTO.getRating());
+            product.setDescription(productDTO.getDescription());
 
-                    if (productDTO.getCategoryName() != null) {
-                        Category category = getCategoryByName(productDTO.getCategoryName());
-                        product.setCategory(category);
-                    }
+            if (productDTO.getCategoryName() != null) {
+                Category category = getCategoryByName(productDTO.getCategoryName());
+                product.setCategory(category);
+            }
 
-                    return productMapper.toDTO(productRepo.save(product));
-                });
+            return productMapper.toDTO(productRepo.save(product));
+        });
     }
 
-    @CacheEvict(value = {"allProducts", "allProductsByName", "productById"}, allEntries = true)
+    @CacheEvict(value = { "allProducts", "allProductsByName", "productById" }, allEntries = true)
     public boolean delete(Long id) {
         boolean exists = this.existsById(id);
         if (!exists) {

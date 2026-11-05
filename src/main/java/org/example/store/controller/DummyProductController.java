@@ -32,17 +32,15 @@ public class DummyProductController {
 
     @GetMapping(value = "/batches", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<List<DummyProductDTO>> streamAllDummyProductsBatches() {
-        return dummyProductService.getAllDummyProducts()
-                .buffer(5)
-                .doOnNext(batch -> {
-                    String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-                    log.info("Sending Batch Of Size {} At {}", batch.size(), timestamp);
-                })
-                .delayElements(Duration.ofSeconds(2));
+        return dummyProductService.getAllDummyProducts().buffer(5).doOnNext(batch -> {
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            log.info("Sending Batch Of Size {} At {}", batch.size(), timestamp);
+        }).delayElements(Duration.ofSeconds(2));
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<DummyProductDTO> getDummyProductById(@Positive(message = "Dummy Product ID must be a positive number.") @PathVariable Integer id) {
+    public Mono<DummyProductDTO> getDummyProductById(
+            @Positive(message = "Dummy Product ID must be a positive number.") @PathVariable Integer id) {
         return dummyProductService.getDummyProductById(id);
     }
 }

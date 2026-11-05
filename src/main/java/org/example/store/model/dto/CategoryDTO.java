@@ -1,6 +1,5 @@
 package org.example.store.model.dto;
 
-
 import lombok.*;
 
 import java.io.Serial;
@@ -11,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ToString(exclude = {"products"})
+@ToString(exclude = { "products" })
 public class CategoryDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;

@@ -1,6 +1,5 @@
 package org.example.store.model.dto;
 
-
 import lombok.*;
 
 import java.io.Serial;

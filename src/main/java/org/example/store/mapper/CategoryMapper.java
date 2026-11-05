@@ -5,7 +5,7 @@ import org.example.store.model.entity.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {ProductMapper.class})
+@Mapper(componentModel = "spring", uses = { ProductMapper.class })
 public interface CategoryMapper {
     @Mapping(target = "products", source = "products")
     CategoryDTO toDTO(Category category);

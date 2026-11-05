@@ -33,10 +33,7 @@ public class Customer extends BaseEntity {
     private String email;
 
     @Column(name = "customer_phone", length = 20)
-    @Pattern(
-            regexp = "^\\+?[0-9]{7,15}$",
-            message = "Phone number must contain only digits and may start with '+'"
-    )
+    @Pattern(regexp = "^\\+?[0-9]{7,15}$", message = "Phone number must contain only digits and may start with '+'")
     private String phoneNumber;
 
     @Column(name = "customer_address")

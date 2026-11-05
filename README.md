@@ -137,6 +137,22 @@ Code formatting is enforced using `formatter-maven-plugin`. Run these commands b
 
 ---
 
+## Continuous Integration (CI)
+
+Every push and pull request to `main` triggers our GitHub Actions pipeline, which runs 4 independent jobs:
+- **`formatting`**: Checks Java code formatting with `formatter-maven-plugin`.
+- **`build`**: Compiles production and test sources.
+- **`test`**: Executes all unit and integration tests against containerized MySQL and Redis services.
+- **`run`**: Smoke tests application startup and checks health via the Swagger documentation endpoint.
+
+---
+
+## Contributing
+
+Contributions are always welcome! Before opening an issue or pull request, please read our [Contributing Guide](CONTRIBUTING.md) for any details needed.
+
+---
+
 ## Configuration
 
 - Environment variables are loaded from `.env`.

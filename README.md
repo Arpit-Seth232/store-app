@@ -1,86 +1,21 @@
 # Store App
 
-A simple Spring Boot backend application for managing a store system. It provides REST APIs for products, categories, customers, orders, and integrates with external services.
+[![CI Pipeline](https://github.com/ahmedmmordi/store-app/actions/workflows/ci.yml/badge.svg)](https://github.com/ahmedmmordi/store-app/actions/workflows/ci.yml)
+
+> **Personal Learning & Open-Source Practice**: This is a personal learning project, but it is open for anyone who wants to practice and simulate real-world open-source contributions (learning Git workflows, making pull requests, working with CI/CD pipelines, and collaborating on a Spring Boot backend).  
+> ⭐ If you find this helpful, don't forget to **star the repo** and share it with your friends!
+
+A Spring Boot 3.x store backend providing REST APIs for products, categories, customers, orders, and reactive external product integrations.
 
 ---
 
-## Main Features
+## Tech Stack & Architecture
 
-- **CRUD operations** for:
-    - Products
-    - Categories
-    - Customers
-    - Orders & Order Items
-- **External API integration** for dummy products using WebClient (Reactive).
-- **Redis caching** for frequently accessed data.
-- **AOP-based time measurement** for service method execution.
-- **Database migrations** using Flyway.
-
----
-
-## Tech Stack
-
-### Core
-- Java 17
-- Spring Boot 3.x
-- Maven For Dependency Management
-
-### Persistence
-- Spring Data JPA
-- MySQL
-- Flyway (DB migrations)
-- HikariCP (connection pooling)
-
-### Caching
-- Spring Cache Abstraction
-- Redis Cache
-
-### Web
-- Spring Web (REST)
-- Spring WebFlux (Reactive APIs)
-- WebClient (external API calls)
-
-### Mapping & Validation
-- MapStruct (DTO ↔ Entity mapping)
-- Jakarta Validation (Bean Validation)
-
-### Cross-Cutting Concerns
-- Spring AOP (method execution time logging)
-
----
-
-## Architecture Overview
-
-- **Controller layer**  
-  Exposes REST endpoints and handles request validation.
-
-- **Service layer**  
-  Contains business logic, caching annotations, and transactional operations.
-
-- **Repository layer**  
-  Uses Spring Data JPA with optimized queries.
-
-- **Mapper layer**  
-  Converts between entities and DTOs using MapStruct.
-
-- **Config layer**  
-  Centralized configuration for Redis, WebClient, JPA auditing, and connection pooling.
-
----
-
-## OpenAPI & Swagger
-
-This project uses **Springdoc OpenAPI** to generate API documentation automatically.
-
-- **Swagger UI**
-  ```text
-  http://localhost:8080/swagger
-  ```
-
-- **OpenAPI JSON**
-  ```text
-  http://localhost:8080/api-docs
-  ```
+- **Backend**: Java 17, Spring Boot 3.x (Web, WebFlux, Data JPA, Cache)
+- **Database & Migration**: MySQL 8.0, Flyway migrations, HikariCP
+- **Caching**: Redis Cache via Spring Cache abstraction
+- **Mapping & Validation**: MapStruct, Jakarta Validation
+- **Docs & Monitoring**: Springdoc OpenAPI (Swagger UI), Spring AOP execution logging
 
 ---
 
@@ -91,13 +26,11 @@ This project uses **Springdoc OpenAPI** to generate API documentation automatica
 - Docker & Docker Compose
 
 ### 1. Setup Environment
-Copy the example environment file and update any configurations (e.g. database credentials or ports) if needed:
 ```bash
 cp .env.example .env
 ```
 
 ### 2. Start Infrastructure (MySQL & Redis)
-Spin up the database and cache containers:
 ```bash
 docker compose up -d
 ```
@@ -106,7 +39,7 @@ docker compose up -d
 ```bash
 ./mvnw spring-boot:run
 ```
-Once running, access the Swagger UI at `http://localhost:8080/swagger`.
+Access the interactive API docs at: [http://localhost:8080/swagger](http://localhost:8080/swagger)
 
 ### 4. Run Tests
 ```bash
@@ -114,7 +47,6 @@ Once running, access the Swagger UI at `http://localhost:8080/swagger`.
 ```
 
 ### 5. Stop Infrastructure
-To stop the background containers:
 ```bash
 docker compose down
 ```
@@ -123,37 +55,25 @@ docker compose down
 
 ## Code Style & Formatting
 
-Code formatting is enforced using `formatter-maven-plugin`. Run these commands before committing:
+Code style is enforced via `formatter-maven-plugin`. Run these before committing:
 
-- **Auto-format codebase**:
-  ```bash
-  ./mvnw formatter:format
-  ```
-
-- **Validate formatting**:
-  ```bash
-  ./mvnw formatter:validate
-  ```
+```bash
+./mvnw formatter:format    # Auto-format all files
+./mvnw formatter:validate  # Validate formatting (runs in CI)
+```
 
 ---
 
 ## Continuous Integration (CI)
 
-Every push and pull request to `main` triggers our GitHub Actions pipeline, which runs 4 independent jobs:
-- **`formatting`**: Checks Java code formatting with `formatter-maven-plugin`.
-- **`build`**: Compiles production and test sources.
-- **`test`**: Executes all unit and integration tests against containerized MySQL and Redis services.
-- **`run`**: Smoke tests application startup and checks health via the Swagger documentation endpoint.
+Every push and pull request triggers our GitHub Actions pipeline, which runs 4 independent verification jobs:
+1. **`formatting`**: Validates Java formatting with `formatter-maven-plugin`.
+2. **`build`**: Verifies compilation of main and test sources.
+3. **`test`**: Executes all tests against containerized MySQL & Redis.
+4. **`run`**: Smoke tests boot and Swagger health response.
 
 ---
 
 ## Contributing
 
-Contributions are always welcome! Before opening an issue or pull request, please read our [Contributing Guide](CONTRIBUTING.md) for any details needed.
-
----
-
-## Configuration
-
-- Environment variables are loaded from `.env`.
-- Centralized application configuration via `application.yml`.
+First-time open-source contributors are warmly welcomed! Please read our [Contributing Guide](CONTRIBUTING.md) for any details needed.

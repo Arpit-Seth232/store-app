@@ -1,115 +1,74 @@
-# Contributing to Store App
+# Contributing Guide
 
-Thank you for your interest in contributing to **Store App**! 
+> **First-Time Contributors Welcome!**  
+> This is a personal learning project, but it is open for anyone who wants to practice and simulate real-world open-source contributions (branching, pull requests, commit squashing, conventional commits, and CI pipelines). If you are looking to practice and make your first contribution, you are warmly welcomed!  
+> ⭐ Don't forget to **star the repo** and share it with friends who want to learn and practice too!
 
-To keep the codebase clean, robust, and easy to maintain, please follow these guidelines when submitting contributions.
-
----
-
-## 1. Getting Started & Git Workflow
-
-### Step 1: Sync with `main` and create a feature branch
-Always start from the latest `main` branch:
-```bash
-git checkout main
-git pull origin main
-git checkout -b feat/your-feature-name
-```
-> Use descriptive branch names like `feat/product-price-range`, `fix/order-delete-response`, or `test/category-service`.
-
-### Step 2: Make your changes
-- Follow the existing architecture and patterns:
-  - **Controller**: REST endpoints, request validation (`@Valid`, `@Positive`).
-  - **Service**: Business logic, caching annotations (`@Cacheable`, `@CacheEvict`).
-  - **Repository**: Spring Data JPA query methods.
-  - **Mapper**: MapStruct mappings between Entity and DTO.
-
-### Step 3: Database Migrations Rule (Crucial ⚠️)
-- **NEVER edit or delete existing migration files** in `src/main/resources/db/migration/`. Flyway will fail on checksum mismatches.
-- If your change requires schema changes, **always add a new migration file** with the next version number (e.g., `V7__your_migration_description.sql`).
+Please follow this simple workflow to ensure quick and smooth reviews.
 
 ---
 
-## 2. Before Opening a Pull Request
+## 1. Branch & Develop
 
-Always run the following commands locally to ensure your changes comply with formatting and pass all tests:
+1. **Sync with latest `main`**:
+   ```bash
+   git checkout main && git pull origin main
+   git checkout -b feat/your-feature-name
+   ```
+2. **Follow existing patterns**: Keep controllers, services, repositories, and MapStruct mappers aligned with the current structure.
+3. **Database Migrations Rule (Crucial)**:
+   - **Never edit or delete existing migration files** in `src/main/resources/db/migration/`.
+   - If schema changes are needed, **add a new migration file** with the next version (e.g. `V7__description.sql`).
 
-### 1. Code Formatting
-Auto-format your code and verify there are no style violations:
+---
+
+## 2. Format & Verify Locally
+
+Before committing, ensure your code complies with formatting and passes all tests:
+
 ```bash
-# Auto-format all files
+# 1. Format code
 ./mvnw formatter:format
 
-# Validate formatting (same check run by CI)
+# 2. Check formatting (same check as CI)
 ./mvnw formatter:validate
-```
 
-### 2. Build & Test
-Run the full verification lifecycle (compilation, all tests, and packaging):
-```bash
+# 3. Compile, run tests, and package (requires docker compose up -d)
 ./mvnw clean verify
 ```
-> Ensure your local MySQL and Redis containers are running (`docker compose up -d`) before running tests.
 
 ---
 
-## 3. Commit Message Conventions
+## 3. Commit Conventions
 
-We follow **Conventional Commits**. Please format your commit messages clearly:
-
+We follow **Conventional Commits**:
 ```text
 <type>(<scope>): <short description>
 ```
-
-### Common Types:
-- `feat`: A new feature (e.g., `feat(product): add price range filter endpoint`)
-- `fix`: A bug fix (e.g., `fix(order): return no content on successful delete`)
-- `style`: Formatting changes (e.g., `style: format codebase with formatter-maven-plugin`)
-- `test`: Adding or improving tests (e.g., `test(category): add unit tests for CategoryService`)
-- `docs`: Documentation updates (e.g., `docs: update README with getting started guide`)
-- `refactor`: Code change that neither fixes a bug nor adds a feature
+* `feat`: New feature (e.g., `feat(product): add price range filter`)
+* `fix`: Bug fix (e.g., `fix(order): return 204 on successful deletion`)
+* `style`: Code style / formatting (e.g., `style: format codebase`)
+* `test`: Adding or updating tests (e.g., `test(category): add unit tests`)
+* `docs`: Documentation changes (e.g., `docs: update README`)
 
 ---
 
-## 4. Submitting Your Pull Request
+## 4. Rebase, Squash & Submit PR
 
-### Keep your branch updated
-Before pushing, fetch the latest changes from `main` and rebase your branch:
-```bash
-git fetch origin
-git rebase origin/main
-```
-If there are any merge conflicts, resolve them, run `./mvnw clean verify`, and continue the rebase:
-```bash
-git add <resolved-files>
-git rebase --continue
-```
-
-### Squash your commits (Keep git history linear)
-To maintain a clean and linear git commit graph, each PR should contain **only 1 atomic commit**. If you have multiple commits on your feature branch, squash them before submitting your PR:
-```bash
-# Interactively squash your branch commits against main
-git rebase -i origin/main
-```
-In the interactive editor, keep the first commit as `pick`, change the others to `squash` (or `s`), and save with a clean Conventional Commit message.
-
-### Push and open a PR
-Push your branch to GitHub:
-```bash
-git push -u origin feat/your-feature-name
-```
-Then open a Pull Request against the `main` branch.
-
-### Verify CI
-Once your PR is created, GitHub Actions will automatically run the CI pipeline:
-1. **Formatting**: Checks code style compliance.
-2. **Build**: Verifies compilation of main and test sources.
-3. **Test & Verify**: Runs the complete test suite.
-4. **Run (Smoke Test)**: Verifies the application boots and responds to health checks.
-
-> All 4 CI checks must pass before a PR can be merged.
-
-### If CI Fails
-- Click **Details** on the failed job in your PR to inspect the build logs.
-- Identify the root cause (e.g., formatting violation, failing test, or compilation error).
-- Fix the issue locally, verify with `./mvnw clean verify`, and push your fix. **Do not wait for a maintainer to notify you—proactively investigate and resolve any CI failure on your PR.**
+1. **Rebase on `main`**:
+   ```bash
+   git fetch origin
+   git rebase origin/main
+   ```
+2. **Squash commits to 1 (Keep history linear)**:
+   Every PR should have **only 1 semantic commit**. If you made multiple commits, squash them:
+   ```bash
+   git rebase -i origin/main
+   ```
+   *(Keep the first commit as `pick`, change others to `squash` or `s`, and save).*
+3. **Push and open a PR**:
+   ```bash
+   git push -u origin feat/your-feature-name
+   ```
+4. **Inspect CI**:
+   All 4 GitHub Actions jobs (`formatting`, `build`, `test`, `run`) must pass. If any job fails, click **Details**, inspect the error log, fix it locally, and push. *Do not wait for a maintainer to point out CI failures.*

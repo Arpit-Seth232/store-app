@@ -8,15 +8,24 @@ Please follow this simple workflow to ensure quick and smooth reviews.
 
 ---
 
-## 1. Branch & Develop
+## 1. Fork, Clone & Branch
 
-1. **Sync with latest `main`**:
+1. **Fork the repository**: Click the **Fork** button at the top right of the repo on GitHub to create your own copy.
+2. **Clone your fork**:
    ```bash
-   git checkout main && git pull origin main
+   git clone https://github.com/<your-username>/store-app.git
+   cd store-app
+   ```
+3. **Add upstream remote** (to sync with original repo updates):
+   ```bash
+   git remote add upstream https://github.com/ahmedmmordi/store-app.git
+   ```
+4. **Create a feature branch**:
+   ```bash
    git checkout -b feat/your-feature-name
    ```
-2. **Follow existing patterns**: Keep controllers, services, repositories, and MapStruct mappers aligned with the current structure (see [ARCHITECTURE.md](ARCHITECTURE.md) for full layer descriptions).
-3. **Database Migrations Rule (Crucial)**:
+5. **Follow existing patterns**: Keep controllers, services, repositories, and MapStruct mappers aligned with the current structure (see [ARCHITECTURE.md](ARCHITECTURE.md) for full layer descriptions).
+6. **Database Migrations Rule (Crucial)**:
    - **Never edit or delete existing migration files** in `src/main/resources/db/migration/`.
    - If schema changes are needed, **add a new migration file** with the next version (e.g. `V7__description.sql`).
 
@@ -55,20 +64,21 @@ We follow **Conventional Commits**:
 
 ## 4. Rebase, Squash & Submit PR
 
-1. **Rebase on `main`**:
+1. **Sync with upstream `main`**:
    ```bash
-   git fetch origin
-   git rebase origin/main
+   git fetch upstream
+   git rebase upstream/main
    ```
 2. **Squash commits to 1 (Keep history linear)**:
    Every PR should have **only 1 semantic commit**. If you made multiple commits, squash them:
    ```bash
-   git rebase -i origin/main
+   git rebase -i upstream/main
    ```
    *(Keep the first commit as `pick`, change others to `squash` or `s`, and save).*
-3. **Push and open a PR**:
+3. **Push to your fork and open a PR**:
    ```bash
    git push -u origin feat/your-feature-name
    ```
+   Then visit the original repository on GitHub and click **Compare & pull request**.
 4. **Inspect CI**:
    All 4 GitHub Actions jobs (`formatting`, `build`, `test`, `run`) must pass. If any job fails, click **Details**, inspect the error log, fix it locally, and push. *Do not wait for a maintainer to point out CI failures.*

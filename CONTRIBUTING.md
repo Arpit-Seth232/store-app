@@ -15,7 +15,7 @@ Please follow this simple workflow to ensure quick and smooth reviews.
    git checkout main && git pull origin main
    git checkout -b feat/your-feature-name
    ```
-2. **Follow existing patterns**: Keep controllers, services, repositories, and MapStruct mappers aligned with the current structure.
+2. **Follow existing patterns**: Keep controllers, services, repositories, and MapStruct mappers aligned with the current structure (see [ARCHITECTURE.md](ARCHITECTURE.md) for full layer descriptions).
 3. **Database Migrations Rule (Crucial)**:
    - **Never edit or delete existing migration files** in `src/main/resources/db/migration/`.
    - If schema changes are needed, **add a new migration file** with the next version (e.g. `V7__description.sql`).

@@ -17,6 +17,8 @@ A Spring Boot 3.x store backend providing REST APIs for products, categories, cu
 - **Mapping & Validation**: MapStruct, Jakarta Validation
 - **Docs & Monitoring**: Springdoc OpenAPI (Swagger UI), Spring AOP execution logging
 
+For a detailed breakdown of package responsibilities, request lifecycle, and data flow, see [ARCHITECTURE.md](ARCHITECTURE.md).
+
 ---
 
 ## Getting Started

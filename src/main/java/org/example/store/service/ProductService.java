@@ -1,6 +1,8 @@
 package org.example.store.service;
 
 import lombok.RequiredArgsConstructor;
+
+import org.example.store.exception.NotFoundException;
 import org.example.store.mapper.ProductMapper;
 import org.example.store.model.dto.ProductDTO;
 import org.example.store.model.entity.Category;
@@ -11,8 +13,13 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +48,8 @@ public class ProductService {
         return productRepo.existsById(id);
     }
 
-    @CacheEvict(value = { "allProducts", "allProductsByName", "productById" }, allEntries = true)
+    @CacheEvict(value = { "allProducts", "allProductsByName", "productById",
+            "productsByCategoryId" }, allEntries = true)
     public ProductDTO insert(ProductDTO productDTO) {
         Product product = productMapper.toEntity(productDTO);
         Category category = getCategoryByName(productDTO.getCategoryName());
@@ -49,7 +57,8 @@ public class ProductService {
         return productMapper.toDTO(productRepo.save(product));
     }
 
-    @CacheEvict(value = { "allProducts", "allProductsByName", "productById" }, allEntries = true)
+    @CacheEvict(value = { "allProducts", "allProductsByName", "productById",
+            "productsByCategoryId" }, allEntries = true)
     public Optional<ProductDTO> update(Long id, ProductDTO productDTO) {
         return productRepo.findById(id).map(product -> {
             product.setProductName(productDTO.getProductName());
@@ -66,7 +75,8 @@ public class ProductService {
         });
     }
 
-    @CacheEvict(value = { "allProducts", "allProductsByName", "productById" }, allEntries = true)
+    @CacheEvict(value = { "allProducts", "allProductsByName", "productById",
+            "productsByCategoryId" }, allEntries = true)
     public boolean delete(Long id) {
         boolean exists = this.existsById(id);
         if (!exists) {
@@ -79,5 +89,25 @@ public class ProductService {
     private Category getCategoryByName(String categoryName) {
         return categoryRepo.findByCategoryName(categoryName)
                 .orElseThrow(() -> new RuntimeException("Category '" + categoryName + "' Not Found."));
+    }
+
+    @Cacheable(value = "productsByCategoryId", key = "#categoryId")
+    public List<ProductDTO> findByCategoryId(Long categoryId) {
+
+        boolean exists = categoryRepo.existsById(categoryId);
+
+        if (!exists) {
+            throw new NotFoundException("Category '" + categoryId + "' Not Found.");
+        }
+
+        List<ProductDTO> products = productRepo.findByCategoryId(categoryId).stream().map(productMapper::toDTO)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        if (products.isEmpty()) {
+            throw new NotFoundException("Product with category '" + categoryId + "' Not Found.");
+        }
+
+        return products;
+
     }
 }

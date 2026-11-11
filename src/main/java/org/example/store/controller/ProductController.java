@@ -40,6 +40,15 @@ public class ProductController {
         return productService.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Get products by category ID", description = "Retrieves all products belonging to a specific category.", responses = {
+            @ApiResponse(responseCode = "200", description = "Products Retrieved"),
+            @ApiResponse(responseCode = "404", description = "Category Not Found") })
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<ProductDTO>> findAllByCategoryId(
+            @Positive(message = "Category ID must be a positive number.") @PathVariable Long categoryId) {
+        return ResponseEntity.ok(productService.findByCategoryId(categoryId));
+    }
+
     @PostMapping("")
     public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO productDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.insert(productDTO));

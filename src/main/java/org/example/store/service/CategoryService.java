@@ -38,13 +38,15 @@ public class CategoryService {
         return categoryRepo.existsById(id);
     }
 
-    @CacheEvict(value = { "allCategories", "allCategoriesByName", "categoryById" }, allEntries = true)
+    @CacheEvict(value = { "allCategories", "allCategoriesByName", "categoryById",
+            "productsByCategoryId" }, allEntries = true)
     public CategoryDTO insert(CategoryDTO categoryDTO) {
         Category category = categoryMapper.toEntity(categoryDTO);
         return categoryMapper.toDTO(categoryRepo.save(category));
     }
 
-    @CacheEvict(value = { "allCategories", "allCategoriesByName", "categoryById" }, allEntries = true)
+    @CacheEvict(value = { "allCategories", "allCategoriesByName", "categoryById",
+            "productsByCategoryId" }, allEntries = true)
     public Optional<CategoryDTO> update(Long id, CategoryDTO categoryDTO) {
         return categoryRepo.findById(id).map(existingCategory -> {
             existingCategory.setCategoryName(categoryDTO.getCategoryName());
@@ -53,7 +55,8 @@ public class CategoryService {
         });
     }
 
-    @CacheEvict(value = { "allCategories", "allCategoriesByName", "categoryById" }, allEntries = true)
+    @CacheEvict(value = { "allCategories", "allCategoriesByName", "categoryById",
+            "productsByCategoryId" }, allEntries = true)
     public boolean delete(Long id) {
         boolean exists = this.existsById(id);
         if (!exists) {
